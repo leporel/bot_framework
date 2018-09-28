@@ -20,14 +20,15 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
- */
+*/
 package skypeapiexamples
 
 import (
-	"net/http"
 	"crypto/tls"
-	"github.com/michivip/skypeapi"
 	"fmt"
+	"net/http"
+
+	"github.com/leporel/bot_framework"
 )
 
 // some basic constants
@@ -41,8 +42,7 @@ const (
 func handleActivity(activity *skypeapi.Activity) {
 	if activity.Type == "message" {
 		// hard coding an auth token is no good practice! I am just doing this to make this example more simple.
-		if err := skypeapi.SendReplyMessage(activity, "Good evening. Nice to meet you!", "YOUR-AUTH-TOKEN");
-			err != nil {
+		if err := skypeapi.SendReplyMessage(activity, "Good evening. Nice to meet you!", "YOUR-AUTH-TOKEN"); err != nil {
 			panic(err)
 		} else {
 			fmt.Println("Successfully sent response message to skype user: " + activity.From.Name)

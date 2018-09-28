@@ -1,4 +1,4 @@
-package skypeapi
+package bfapi
 
 import (
 	"strings"

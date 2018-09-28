@@ -24,7 +24,7 @@ SOFTWARE.
 package skypeapiexamples
 
 import (
-	"github.com/michivip/skypeapi"
+	"github.com/leporel/bot_framework"
 	"encoding/json"
 	"fmt"
 )
