@@ -74,6 +74,10 @@ type EndpointHandler struct {
 	ActivityReceivedHandleFunction func(activity *bfmodels.Activity)
 }
 
+const (
+	DefaultTlsHeaderValue  = "max-age=63072000; includeSubDomains" // max-age in seconds which matches 2 years
+)
+
 // The activityReceivedHandleFunction will gets called on incoming Activity objects for example incoming skype messages.
 // The authorization token which is used to authenticate incoming requests by the microsoft servers.
 // The microsoftAppId which is used to authorize incoming requests
@@ -81,7 +85,7 @@ type EndpointHandler struct {
 func NewEndpointHandler(activityReceivedHandleFunction func(activity *bfmodels.Activity), authorizationToken, microsoftAppId string) *EndpointHandler {
 	endpointHandler := &EndpointHandler{
 		AuthorizationToken:             authorizationToken,
-		TlsHeaderValue:                 bfapi.DefaultTlsHeaderValue,
+		TlsHeaderValue:                 DefaultTlsHeaderValue,
 		ActivityReceivedHandleFunction: activityReceivedHandleFunction,
 		MicrosoftAppId:                 microsoftAppId,
 	}
