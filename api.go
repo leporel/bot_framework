@@ -42,10 +42,10 @@ type TokenResponse struct {
 }
 
 const (
-	unexpectedHttpStatusCodeTemplate = "The microsoft servers returned an unexpected http status code: %v"
+	UnexpectedHttpStatusCodeTemplate = "The microsoft servers returned an unexpected http status code: %v"
 
-	requestTokenUrl      = "https://login.microsoftonline.com/botframework.com/oauth2/v2.0/token"
-	replyMessageTemplate = "%vv3/conversations/%v/activities/%v"
+	RequestTokenUrl      = "https://login.microsoftonline.com/botframework.com/oauth2/v2.0/token"
+	ReplyMessageTemplate = "%vv3/conversations/%v/activities/%v"
 )
 
 func RequestAccessToken(microsoftAppId string, microsoftAppPassword string) (TokenResponse, error) {
@@ -55,13 +55,13 @@ func RequestAccessToken(microsoftAppId string, microsoftAppPassword string) (Tok
 	values.Set("client_id", microsoftAppId)
 	values.Set("client_secret", microsoftAppPassword)
 	values.Set("scope", "https://api.botframework.com/.default")
-	if response, err := http.PostForm(requestTokenUrl, values); err != nil {
+	if response, err := http.PostForm(RequestTokenUrl, values); err != nil {
 		return tokenResponse, err
 	} else if response.StatusCode == http.StatusOK {
 		defer response.Body.Close()
 		json.NewDecoder(response.Body).Decode(&tokenResponse)
 		return tokenResponse, err
 	} else {
-		return tokenResponse, fmt.Errorf(unexpectedHttpStatusCodeTemplate, response.StatusCode)
+		return tokenResponse, fmt.Errorf(UnexpectedHttpStatusCodeTemplate, response.StatusCode)
 	}
 }

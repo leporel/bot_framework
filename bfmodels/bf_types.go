@@ -1,4 +1,4 @@
-package models
+package bfmodels
 
 const (
 	openIdRequestPath                   string = "https://login.botframework.com/v1/.well-known/openidconfiguration"

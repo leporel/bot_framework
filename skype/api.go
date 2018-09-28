@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/leporel/bot_framework/models"
+	"github.com/leporel/bot_framework/bfmodels"
 )
 
-func SendReplyMessage(activity *Activity, message, authorizationToken string) error {
-	responseActivity := &Activity{
+func SendReplyMessage(activity *bfmodels.Activity, message, authorizationToken string) error {
+	responseActivity := &bfmodelsActivity{
 		Type:         activity.Type,
 		From:         activity.Recipient,
 		Conversation: activity.Conversation,
@@ -18,11 +18,11 @@ func SendReplyMessage(activity *Activity, message, authorizationToken string) er
 		Text:         message,
 		ReplyToID:    activity.ID,
 	}
-	replyUrl := fmt.Sprintf(replyMessageTemplate, activity.ServiceURL, activity.Conversation.ID, activity.ID)
+	replyUrl := fmt.Sprintf(bfmodels.ReplyMessageTemplate, activity.ServiceURL, activity.Conversation.ID, activity.ID)
 	return SendActivityRequest(responseActivity, replyUrl, authorizationToken)
 }
 
-func SendActivityRequest(activity *models.Activity, replyUrl, authorizationToken string) error {
+func SendActivityRequest(activity *bfmodels.Activity, replyUrl, authorizationToken string) error {
 	client := &http.Client{}
 	if jsonEncoded, err := json.Marshal(*activity); err != nil {
 		return err
