@@ -1,14 +1,5 @@
 package bfmodels
 
-const (
-	openIdRequestPath                   string = "https://login.botframework.com/v1/.well-known/openidconfiguration"
-	authorizationHeaderValuePrefix      string = "Bearer "
-	wrongAuthorizationHeaderFormatError string = "The provided authorization header is in the wrong format: %v"
-	wrongSplitLengthError               string = "The authorize value split length with character \"%v\" is not valid: %v (%v)"
-	splitCharacter                      string = "."
-	issuerUrl                           string = "https://api.botframework.com"
-)
-
 type OpenIdDocument struct {
 	Issuer                            string   `json:"issuer"`
 	AuthorizationEndpoint             string   `json:"authorization_endpoint"`

@@ -29,12 +29,6 @@ import (
 	"net/http"
 )
 
-const (
-	defaultPath            string = "/"
-	defaultTlsHeaderValue  string = "max-age=63072000; includeSubDomains" // max-age in seconds which matches 2 years
-	authorizationHeaderKey string = "Authorization"
-)
-
 type Endpoint struct {
 	// Explanation: The address the server should listen on. This declares the port and the ip.
 	// Example: ":2345" The application would run on 0.0.0.0 with the port 2345
@@ -62,7 +56,7 @@ func NewEndpoint(address string) *Endpoint {
 	}
 	return &Endpoint{
 		Address:   address,
-		Path:      defaultPath,
+		Path:      DefaultPath,
 		TLSConfig: cfg,
 	}
 }

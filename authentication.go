@@ -12,15 +12,6 @@ import (
 	"time"
 )
 
-const (
-	openIdRequestPath                   string = "https://login.botframework.com/v1/.well-known/openidconfiguration"
-	authorizationHeaderValuePrefix      string = "Bearer "
-	wrongAuthorizationHeaderFormatError string = "The provided authorization header is in the wrong format: %v"
-	wrongSplitLengthError               string = "The authorize value split length with character \"%v\" is not valid: %v (%v)"
-	splitCharacter                      string = "."
-	issuerUrl                           string = "https://api.botframework.com"
-)
-
 type OpenIdDocument struct {
 	Issuer                            string   `json:"issuer"`
 	AuthorizationEndpoint             string   `json:"authorization_endpoint"`
@@ -65,7 +56,7 @@ type MicrosoftJsonWebToken struct {
 }
 
 func (microSoftJsonWebToken MicrosoftJsonWebToken) Verify(microsoftAppId string, signingKeys SigningKeys) bool {
-	if microSoftJsonWebToken.Payload.Issuer != issuerUrl {
+	if microSoftJsonWebToken.Payload.Issuer != IssuerUrl {
 		return false
 	} else if microSoftJsonWebToken.Payload.Audience != microsoftAppId {
 		return false
@@ -79,7 +70,7 @@ func (microSoftJsonWebToken MicrosoftJsonWebToken) Verify(microsoftAppId string,
 func GetSigningKeys() (SigningKeys, error) {
 	openIdDocument := &OpenIdDocument{}
 	client := &http.Client{}
-	req, err := http.NewRequest(http.MethodGet, openIdRequestPath, nil)
+	req, err := http.NewRequest(http.MethodGet, OpenIdRequestPath, nil)
 	if err != nil {
 		return SigningKeys{}, err
 	} else {
@@ -128,7 +119,7 @@ func (microSoftJsonWebToken MicrosoftJsonWebToken) verifyCertificate(signingKeys
 			if certificate, err := x509.ParseCertificate(block.Bytes); err != nil {
 				return false
 			} else {
-				hashed := []byte(microSoftJsonWebToken.HeaderBase64 + splitCharacter + microSoftJsonWebToken.PayloadBase64)
+				hashed := []byte(microSoftJsonWebToken.HeaderBase64 + SplitCharacter + microSoftJsonWebToken.PayloadBase64)
 				return certificate.CheckSignature(x509.SHA256WithRSA, hashed, microSoftJsonWebToken.VerifySignature) == nil
 			}
 		}
@@ -156,9 +147,9 @@ func ParseMicrosoftJsonWebToken(headerValue string) (MicrosoftJsonWebToken, erro
 	microsoftJsonWebToken := &MicrosoftJsonWebToken{}
 	parsedHeaderValue := parseHeaderValue(headerValue)
 	if len(parsedHeaderValue) == 0 {
-		return *microsoftJsonWebToken, fmt.Errorf(wrongAuthorizationHeaderFormatError, parsedHeaderValue)
+		return *microsoftJsonWebToken, fmt.Errorf(WrongAuthorizationHeaderFormatError, parsedHeaderValue)
 	} else {
-		var split []string = strings.Split(parsedHeaderValue, splitCharacter)
+		var split []string = strings.Split(parsedHeaderValue, SplitCharacter)
 		if len(split) == 3 {
 			jwtHeader := &JwtHeader{}
 			jwtPayload := &JwtPayload{}
@@ -179,7 +170,7 @@ func ParseMicrosoftJsonWebToken(headerValue string) (MicrosoftJsonWebToken, erro
 			microsoftJsonWebToken.VerifySignature = jwtVerifySignature
 			return *microsoftJsonWebToken, nil
 		} else {
-			return *microsoftJsonWebToken, fmt.Errorf(wrongSplitLengthError, splitCharacter, len(split), parseHeaderValue)
+			return *microsoftJsonWebToken, fmt.Errorf(WrongSplitLengthError, SplitCharacter, len(split), parseHeaderValue)
 		}
 	}
 }
@@ -193,9 +184,9 @@ func decodeBase64JsonPart(rawPart string, partObj interface{}) error {
 }
 
 func parseHeaderValue(headerValue string) string {
-	if index := strings.Index(headerValue, authorizationHeaderValuePrefix); index == 0 &&
-		len(headerValue) > len(authorizationHeaderValuePrefix) {
-		return headerValue[len(authorizationHeaderValuePrefix):]
+	if index := strings.Index(headerValue, AuthorizationHeaderValuePrefix); index == 0 &&
+		len(headerValue) > len(AuthorizationHeaderValuePrefix) {
+		return headerValue[len(AuthorizationHeaderValuePrefix):]
 	} else {
 		return ""
 	}

@@ -5,12 +5,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-
+	"github.com/leporel/bot_framework"
 	"github.com/leporel/bot_framework/bfmodels"
 )
 
 func SendReplyMessage(activity *bfmodels.Activity, message, authorizationToken string) error {
-	responseActivity := &bfmodelsActivity{
+	responseActivity := &bfmodels.Activity{
 		Type:         activity.Type,
 		From:         activity.Recipient,
 		Conversation: activity.Conversation,
@@ -18,7 +18,7 @@ func SendReplyMessage(activity *bfmodels.Activity, message, authorizationToken s
 		Text:         message,
 		ReplyToID:    activity.ID,
 	}
-	replyUrl := fmt.Sprintf(bfmodels.ReplyMessageTemplate, activity.ServiceURL, activity.Conversation.ID, activity.ID)
+	replyUrl := fmt.Sprintf(bfapi.ReplyMessageTemplate, activity.ServiceURL, activity.Conversation.ID, activity.ID)
 	return SendActivityRequest(responseActivity, replyUrl, authorizationToken)
 }
 
@@ -33,7 +33,7 @@ func SendActivityRequest(activity *bfmodels.Activity, replyUrl, authorizationTok
 			bytes.NewBuffer(*&jsonEncoded),
 		)
 		if err == nil {
-			req.Header.Set(authorizationHeaderKey, authorizationHeaderValuePrefix+authorizationToken)
+			req.Header.Set(bfapi.AuthorizationHeaderKey, bfapi.AuthorizationHeaderValuePrefix+authorizationToken)
 			req.Header.Set("Content-Type", "application/json")
 			resp, err := client.Do(*&req)
 			if err == nil {
@@ -43,7 +43,7 @@ func SendActivityRequest(activity *bfmodels.Activity, replyUrl, authorizationTok
 					statusCode == http.StatusAccepted || statusCode == http.StatusNoContent {
 					return nil
 				} else {
-					return fmt.Errorf(unexpectedHttpStatusCodeTemplate, statusCode)
+					return fmt.Errorf(bfapi.UnexpectedHttpStatusCodeTemplate, statusCode)
 				}
 			} else {
 				return err

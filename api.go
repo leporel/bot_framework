@@ -46,6 +46,17 @@ const (
 
 	RequestTokenUrl      = "https://login.microsoftonline.com/botframework.com/oauth2/v2.0/token"
 	ReplyMessageTemplate = "%vv3/conversations/%v/activities/%v"
+
+	OpenIdRequestPath                   = "https://login.botframework.com/v1/.well-known/openidconfiguration"
+	AuthorizationHeaderValuePrefix      = "Bearer "
+	WrongAuthorizationHeaderFormatError = "The provided authorization header is in the wrong format: %v"
+	WrongSplitLengthError               = "The authorize value split length with character \"%v\" is not valid: %v (%v)"
+	SplitCharacter                      = "."
+	IssuerUrl                           = "https://api.botframework.com"
+
+	DefaultPath            = "/"
+	DefaultTlsHeaderValue  = "max-age=63072000; includeSubDomains" // max-age in seconds which matches 2 years
+	AuthorizationHeaderKey = "Authorization"
 )
 
 func RequestAccessToken(microsoftAppId string, microsoftAppPassword string) (TokenResponse, error) {
