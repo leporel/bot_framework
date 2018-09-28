@@ -1,3 +1,5 @@
+
+# fork from michivip/skypeapi
 # Golang Skype API #
 
 ### Warning ###
