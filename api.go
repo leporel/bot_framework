@@ -20,15 +20,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
- */
+*/
 package bfapi
 
 import (
-	"net/http"
-	"net/url"
 	"encoding/json"
 	"fmt"
-	"bytes"
+	"net/http"
+	"net/url"
 )
 
 type MessageListener interface {
@@ -37,8 +36,8 @@ type MessageListener interface {
 
 type TokenResponse struct {
 	TokenType    string `json:"token_type"`
-	ExpiresIn    int `json:"expires_in"`
-	ExtExpiresIn int `json:"ext_expires_in"`
+	ExpiresIn    int    `json:"expires_in"`
+	ExtExpiresIn int    `json:"ext_expires_in"`
 	AccessToken  string `json:"access_token"`
 }
 
@@ -66,4 +65,3 @@ func RequestAccessToken(microsoftAppId string, microsoftAppPassword string) (Tok
 		return tokenResponse, fmt.Errorf(unexpectedHttpStatusCodeTemplate, response.StatusCode)
 	}
 }
-
