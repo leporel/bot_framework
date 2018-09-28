@@ -24,6 +24,8 @@ SOFTWARE.
 package skypeapiexamples
 
 import (
+	"github.com/leporel/bot_framework/bfmodels"
+	"github.com/leporel/bot_framework"
 	"crypto/tls"
 	"encoding/json"
 	"net/http"
@@ -56,7 +58,7 @@ func NewEndpoint(address string) *Endpoint {
 	}
 	return &Endpoint{
 		Address:   address,
-		Path:      DefaultPath,
+		Path:      bfapi.DefaultPath,
 		TLSConfig: cfg,
 	}
 }
@@ -69,17 +71,17 @@ type EndpointHandler struct {
 	// The header value which will be sent to the client with the "Strict-Transport-Security" key
 	TlsHeaderValue string
 	// The function to handle incoming decoded Activity object
-	ActivityReceivedHandleFunction func(activity *skypeapi.Activity)
+	ActivityReceivedHandleFunction func(activity *bfmodels.Activity)
 }
 
 // The activityReceivedHandleFunction will gets called on incoming Activity objects for example incoming skype messages.
 // The authorization token which is used to authenticate incoming requests by the microsoft servers.
 // The microsoftAppId which is used to authorize incoming requests
 // Returns a new Endpoint struct object with the default Strict-Transport-Security Header "max-age=63072000; includeSubDomains".
-func NewEndpointHandler(activityReceivedHandleFunction func(activity *Activity), authorizationToken, microsoftAppId string) *EndpointHandler {
+func NewEndpointHandler(activityReceivedHandleFunction func(activity *bfmodels.Activity), authorizationToken, microsoftAppId string) *EndpointHandler {
 	endpointHandler := &EndpointHandler{
 		AuthorizationToken:             authorizationToken,
-		TlsHeaderValue:                 defaultTlsHeaderValue,
+		TlsHeaderValue:                 bfapi.DefaultTlsHeaderValue,
 		ActivityReceivedHandleFunction: activityReceivedHandleFunction,
 		MicrosoftAppId:                 microsoftAppId,
 	}
@@ -89,7 +91,7 @@ func NewEndpointHandler(activityReceivedHandleFunction func(activity *Activity),
 // This method does not cache the SigningKeys
 // The req which should be proved
 func (endpointHandler EndpointHandler) IsAuthorized(req *http.Request) bool {
-	signingKeys, err := GetSigningKeys()
+	signingKeys, err := bfapi.GetSigningKeys()
 	if err != nil {
 		return false
 	} else {
@@ -99,9 +101,9 @@ func (endpointHandler EndpointHandler) IsAuthorized(req *http.Request) bool {
 
 // The req which should be proved
 // The SigningKeys which can be used to authorize the request
-func (endpointHandler EndpointHandler) IsAuthorizedWithSigningKeys(req *http.Request, signingKeys SigningKeys) bool {
-	var authorizationValue string = req.Header.Get(authorizationHeaderKey)
-	if microsoftJsonWebToken, err := ParseMicrosoftJsonWebToken(authorizationValue); err != nil {
+func (endpointHandler EndpointHandler) IsAuthorizedWithSigningKeys(req *http.Request, signingKeys bfapi.SigningKeys) bool {
+	var authorizationValue string = req.Header.Get(bfapi.AuthorizationHeaderKey)
+	if microsoftJsonWebToken, err := bfapi.ParseMicrosoftJsonWebToken(authorizationValue); err != nil {
 		return false
 	} else {
 		return microsoftJsonWebToken.Verify(endpointHandler.MicrosoftAppId, signingKeys)
@@ -114,7 +116,7 @@ func (endpointHandler EndpointHandler) ServeHTTP(responseWriter http.ResponseWri
 		responseWriter.Header().Add("Strict-Transport-Security", endpointHandler.TlsHeaderValue)
 	}
 
-	var activity Activity
+	var activity bfmodels.Activity
 	if !endpointHandler.IsAuthorized(req) {
 		responseWriter.WriteHeader(http.StatusForbidden)
 	} else if err := json.NewDecoder(req.Body).Decode(&activity); err == nil {

@@ -24,7 +24,7 @@ SOFTWARE.
 package skypeapiexamples
 
 import (
-	"github.com/leporel/bot_framework"
+	"github.com/leporel/bot_framework/bfmodels"
 	"encoding/json"
 	"fmt"
 )
@@ -40,10 +40,10 @@ func startSimpleEndpointPrinter() {
 	authorizationBearerToken := "YOUR-AUTH-TOKEN"
 
 	// Endpoint is going to listen on 0.0.0.0:8080
-	endpoint := skypeapi.NewEndpoint(":8080")
+	endpoint := NewEndpoint(":8080")
 
 	// we define our own handle function
-	srv := endpoint.SetupServer(*skypeapi.NewEndpointHandler(func(activity *skypeapi.Activity) {
+	srv := endpoint.SetupServer(*NewEndpointHandler(func(activity *bfmodels.Activity) {
 		bytes, _ := json.MarshalIndent(activity, "", "  ")
 		fmt.Println(string(bytes))
 	}, authorizationBearerToken, "YOUR-APP-ID"))

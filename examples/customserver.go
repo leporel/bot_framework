@@ -28,7 +28,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/leporel/bot_framework"
+	"github.com/leporel/bot_framework/skype"
+	"github.com/leporel/bot_framework/bfmodels"
 )
 
 // some basic constants
@@ -39,7 +40,7 @@ const (
 )
 
 // this function handles our skype activity
-func handleActivity(activity *skypeapi.Activity) {
+func handleActivity(activity *bfmodels.Activity) {
 	if activity.Type == "message" {
 		// hard coding an auth token is no good practice! I am just doing this to make this example more simple.
 		if err := skypeapi.SendReplyMessage(activity, "Good evening. Nice to meet you!", "YOUR-AUTH-TOKEN"); err != nil {
@@ -62,7 +63,7 @@ func startCustomServerEndpoint() {
 	authorizationBearerToken := "YOUR-AUTH-TOKEN"
 	mux := http.NewServeMux()
 	// here we setup an own activity handler which listens to the path "/skype/actionhook"
-	mux.Handle(actionHookPath, skypeapi.NewEndpointHandler(handleActivity, authorizationBearerToken, "YOUR-APP-ID"))
+	mux.Handle(actionHookPath, NewEndpointHandler(handleActivity, authorizationBearerToken, "YOUR-APP-ID"))
 	// here we could probably just handle our main application
 	mux.HandleFunc(someOtherStuffPath, handleMainPath)
 	// here you could provide your own TLS configuration

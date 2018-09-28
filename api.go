@@ -46,6 +46,7 @@ const (
 
 	RequestTokenUrl      = "https://login.microsoftonline.com/botframework.com/oauth2/v2.0/token"
 	ReplyMessageTemplate = "%vv3/conversations/%v/activities/%v"
+	SendMessage 		 = "%vv3/conversations/%v/activities"
 
 	OpenIdRequestPath                   = "https://login.botframework.com/v1/.well-known/openidconfiguration"
 	AuthorizationHeaderValuePrefix      = "Bearer "
