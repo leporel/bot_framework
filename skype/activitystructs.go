@@ -61,8 +61,6 @@ type Activity struct {
 	// channel-specific functionality:
 	// 	https://docs.microsoft.com/en-us/bot-framework/rest-api/bot-framework-rest-connector-channeldata
 	ChannelData interface{} `json:"channelData,omitempty"`
-	// An ID that uniquely identifies the channel. Set by the channel.
-	ChannelId string `json:"channelId,omitempty"`
 	// Array of objects that represents the entities that were mentioned in the message. Objects in this array
 	// may be any Schema.org object. For example, the array may include Mention objects that identify someone
 	// who was mentioned in the conversation and Place objects that identify a place that was mentioned in the
