@@ -9,18 +9,11 @@ import (
 	"github.com/leporel/bot_framework/bfmodels"
 )
 
-func SendMessage(activity bfmodels.Activity, message, authorizationToken string) error {
-	responseActivity := &bfmodels.Activity{
-		Type:         activity.Type,
-		From:         activity.Recipient,
-		Conversation: activity.Conversation,
-		Recipient:    activity.From,
-		Text:         message,
-		ReplyToID:    activity.ID,
-	}
+func SendMessage(activity bfmodels.Activity, authorizationToken string) error {
 	replyUrl := fmt.Sprintf(SendMessageTemplate, activity.ServiceURL, activity.Conversation.ID)
-	return SendActivityRequest(responseActivity, replyUrl, authorizationToken)
+	return SendActivityRequest(&activity, replyUrl, authorizationToken)
 }
+
 
 func SendReplyMessage(activity *bfmodels.Activity, message, authorizationToken string) error {
 	responseActivity := &bfmodels.Activity{
