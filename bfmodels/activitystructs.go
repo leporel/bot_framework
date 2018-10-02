@@ -242,3 +242,14 @@ type ConversationAccount struct {
 	// A display name that can be used to identify the conversation.
 	Name string `json:"name,omitempty"`
 }
+
+
+
+func (a *Activity) AddAttachmentsFile(name, url, fileType, thumb string) {
+	a.Attachments = append(a.Attachments,Attachment{
+		ContentType: fileType,
+		ContentUrl:  url,
+		Name:         name,
+		ThumbnailUrl: thumb,
+	})
+}

@@ -24,11 +24,11 @@ SOFTWARE.
 package skypeapiexamples
 
 import (
+	"github.com/leporel/bot_framework"
 	"crypto/tls"
 	"fmt"
 	"net/http"
 
-	"github.com/leporel/bot_framework/skype"
 	"github.com/leporel/bot_framework/bfmodels"
 )
 
@@ -43,7 +43,7 @@ const (
 func handleActivity(activity *bfmodels.Activity) {
 	if activity.Type == "message" {
 		// hard coding an auth token is no good practice! I am just doing this to make this example more simple.
-		if err := skypeapi.SendReplyMessage(activity, "Good evening. Nice to meet you!", "YOUR-AUTH-TOKEN"); err != nil {
+		if err := bfapi.SendReplyMessage(activity, "Good evening. Nice to meet you!", "YOUR-AUTH-TOKEN"); err != nil {
 			panic(err)
 		} else {
 			fmt.Println("Successfully sent response message to skype user: " + activity.From.Name)
