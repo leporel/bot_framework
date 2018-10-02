@@ -49,7 +49,23 @@ func SendActivityRequest(activity *bfmodels.Activity, replyUrl, authorizationTok
 					statusCode == http.StatusAccepted || statusCode == http.StatusNoContent {
 					return nil
 				} else {
-					return fmt.Errorf(UnexpectedHttpStatusCodeTemplate, statusCode)
+					switch statusCode {
+					case 400:
+						err = fmt.Errorf("The request was malformed or otherwise incorrect.")
+					case 401:
+						err = fmt.Errorf("The bot is not authorized to make the request.")
+					case 403:
+						err = fmt.Errorf("The bot is not allowed to perform the requested operation.")
+					case 404:
+						err = fmt.Errorf("The requested resource was not found.")
+					case 500:
+						err = fmt.Errorf("An internal server error occurred.")
+					case 503:
+						err = fmt.Errorf("The service is unavailable.")
+					default:
+						err = fmt.Errorf(UnexpectedHttpStatusCodeTemplate, statusCode)
+					}
+					return err
 				}
 			} else {
 				return err
