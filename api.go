@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/leporel/bot_framework/bfmodels"
 )
@@ -13,7 +14,6 @@ func SendMessage(activity bfmodels.Activity, authorizationToken string) error {
 	replyUrl := fmt.Sprintf(SendMessageTemplate, activity.ServiceURL, activity.Conversation.ID)
 	return SendActivityRequest(&activity, replyUrl, authorizationToken)
 }
-
 
 func SendReplyMessage(activity *bfmodels.Activity, message, authorizationToken string) error {
 	responseActivity := &bfmodels.Activity{
@@ -29,7 +29,9 @@ func SendReplyMessage(activity *bfmodels.Activity, message, authorizationToken s
 }
 
 func SendActivityRequest(activity *bfmodels.Activity, replyUrl, authorizationToken string) error {
-	client := &http.Client{}
+	client := &http.Client{
+		Timeout: time.Duration(10 * time.Second),
+	}
 	if jsonEncoded, err := json.Marshal(*activity); err != nil {
 		return err
 	} else {
