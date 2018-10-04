@@ -41,9 +41,17 @@ type TokenResponse struct {
 	AccessToken  string `json:"access_token"`
 }
 
-const (
-	UnexpectedHttpStatusCodeTemplate = "The microsoft servers returned an unexpected http status code: %v"
+var (
+	ErrUnexpectedHttpStatus = fmt.Errorf("The microsoft servers returned an unexpected http status code")
+	ErrStatus400 = fmt.Errorf("The request was malformed or otherwise incorrect.")
+	ErrStatus401 = fmt.Errorf("The bot is not authorized to make the request.")
+	ErrStatus403 = fmt.Errorf("The bot is not allowed to perform the requested operation.")
+	ErrStatus404 = fmt.Errorf("The requested resource was not found.")
+	ErrStatus500 = fmt.Errorf("An internal server error occurred.")
+	ErrStatus503 = fmt.Errorf("The service is unavailable.")
+)
 
+const (
 	RequestTokenUrl      = "https://login.microsoftonline.com/botframework.com/oauth2/v2.0/token"
 	ReplyMessageTemplate = "%vv3/conversations/%v/activities/%v"
 	SendMessageTemplate  = "%vv3/conversations/%v/activities"
@@ -73,6 +81,6 @@ func RequestAccessToken(microsoftAppId string, microsoftAppPassword string) (Tok
 		json.NewDecoder(response.Body).Decode(&tokenResponse)
 		return tokenResponse, err
 	} else {
-		return tokenResponse, fmt.Errorf(UnexpectedHttpStatusCodeTemplate, response.StatusCode)
+		return tokenResponse, ErrUnexpectedHttpStatus
 	}
 }
