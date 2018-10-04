@@ -43,12 +43,12 @@ type TokenResponse struct {
 
 var (
 	ErrUnexpectedHttpStatus = fmt.Errorf("The microsoft servers returned an unexpected http status code")
-	ErrStatus400 = fmt.Errorf("The request was malformed or otherwise incorrect.")
-	ErrStatus401 = fmt.Errorf("The bot is not authorized to make the request.")
-	ErrStatus403 = fmt.Errorf("The bot is not allowed to perform the requested operation.")
-	ErrStatus404 = fmt.Errorf("The requested resource was not found.")
-	ErrStatus500 = fmt.Errorf("An internal server error occurred.")
-	ErrStatus503 = fmt.Errorf("The service is unavailable.")
+	ErrStatusIncorrect = fmt.Errorf("The request was malformed or otherwise incorrect.")
+	ErrStatusAuthorization = fmt.Errorf("The bot is not authorized to make the request.")
+	ErrStatusBadRequest = fmt.Errorf("The bot is not allowed to perform the requested operation.")
+	ErrStatusNotFound = fmt.Errorf("The requested resource was not found.")
+	ErrStatusServer = fmt.Errorf("An internal server error occurred.")
+	ErrStatusUnavailable = fmt.Errorf("The service is unavailable.")
 )
 
 const (

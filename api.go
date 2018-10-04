@@ -53,17 +53,17 @@ func SendActivityRequest(activity *bfmodels.Activity, replyUrl, authorizationTok
 				} else {
 					switch statusCode {
 					case 400:
-						err = ErrStatus400
+						err = ErrStatusIncorrect
 					case 401:
-						err = ErrStatus401
+						err = ErrStatusAuthorization
 					case 403:
-						err = ErrStatus403
+						err = ErrStatusBadRequest
 					case 404:
-						err = ErrStatus404
+						err = ErrStatusNotFound
 					case 500:
-						err = ErrStatus500
+						err = ErrStatusServer
 					case 503:
-						err = ErrStatus503
+						err = ErrStatusUnavailable
 					default:
 						err = ErrUnexpectedHttpStatus
 					}
