@@ -44,14 +44,14 @@ type B64Attachment struct {
 }
 
 type B64AttachContent struct {
-	Title    string     `json:"title"`
-	Text     string     `json:"text"`
-	SubTitle string     `json:"subtitle"`
-	Images   []B64Image `json:"images"`
-	Image    B64Image   `json:"image"`
-	Buttons  []B64Buttons `json:"buttons"`
-	Media    B64Media   `json:"media"`
-	Tap      B64Tap     `json:"tap"`
+	Title    string      `json:"title"`
+	Text     string      `json:"text"`
+	SubTitle string      `json:"subtitle"`
+	Images   []B64Image  `json:"images"`
+	Image    B64Image    `json:"image"`
+	Buttons  []B64Button `json:"buttons"`
+	Media    B64Media    `json:"media"`
+	Tap      B64Tap      `json:"tap"`
 }
 
 type B64Media struct {
@@ -64,7 +64,7 @@ type B64Image struct {
 	Tap B64Tap `json:"tap"`
 }
 
-type B64Buttons struct {
+type B64Button struct {
 	Type  string `json:"type"`
 	Title string `json:"title"`
 	Value string `json:"value"`
