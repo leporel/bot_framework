@@ -49,7 +49,7 @@ type B64AttachContent struct {
 	SubTitle string     `json:"subtitle"`
 	Images   []B64Image `json:"images"`
 	Image    B64Image   `json:"image"`
-	Buttons  B64Buttons `json:"buttons"`
+	Buttons  []B64Buttons `json:"buttons"`
 	Media    B64Media   `json:"media"`
 	Tap      B64Tap     `json:"tap"`
 }
