@@ -17,11 +17,12 @@ type URIObject struct {
 	UrlThumbnail string
 	Body         struct {
 		Text string
+		Title string
+		Description string
 		Link struct {
 			Href string
 			Text string
 		}
-		Title string
 		Swift struct {
 			B64 string
 		}
@@ -176,6 +177,12 @@ func NewURIObjectFromText(in string) (*URIObject, error) {
 			if n.Data == "title" {
 				if n.FirstChild != nil {
 					res.Body.Title = n.FirstChild.Data
+				}
+			}
+			
+			if n.Data == "description" {
+				if n.FirstChild != nil {
+					res.Body.Description = n.FirstChild.Data
 				}
 			}
 
