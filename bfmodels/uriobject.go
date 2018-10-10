@@ -50,8 +50,34 @@ type B64AttachContent struct {
 	Images   []B64Image  `json:"images"`
 	Image    B64Image    `json:"image"`
 	Buttons  []B64Button `json:"buttons"`
-	Media    B64Media    `json:"media"`
+	Media    []B64Media  `json:"media"`
 	Tap      B64Tap      `json:"tap"`
+	Type     string      `json:"type"`
+	Body     []B64Body   `json:"body"`
+}
+
+type B64Body struct {
+	Type         string          `json:"type"`
+	Items        []B64Item       `json:"items"`
+	SelectAction B64SelectAction `json:"selectAction"`
+	Height       string          `json:"height"`
+}
+
+type B64Item struct {
+	Type     string `json:"type"`
+	Text     string `json:"text"`
+	Size     string `json:"size"`
+	Weight   string `json:"weight"`
+	Color    string `json:"color"`
+	MaxLines int    `json:"maxLines"`
+	Wrap     bool   `json:"wrap"`
+	Spacing  string `json:"spacing"`
+}
+
+type B64SelectAction struct {
+	Type  string `json:"type"`
+	Title string `json:"title"`
+	URL   string `json:"url"`
 }
 
 type B64Media struct {
