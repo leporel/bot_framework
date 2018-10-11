@@ -51,6 +51,7 @@ func SendActivityRequest(activity *bfmodels.Activity, replyUrl, authorizationTok
 					statusCode == http.StatusAccepted || statusCode == http.StatusNoContent {
 					return nil
 				} else {
+					// TODO Refactor error types, return json response
 					switch statusCode {
 					case 400:
 						err = ErrStatusIncorrect
